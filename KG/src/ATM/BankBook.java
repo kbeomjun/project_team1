@@ -1,5 +1,5 @@
 package ATM;
 
-public class BankBook {
-
+public enum BankBook {
+	
 }
