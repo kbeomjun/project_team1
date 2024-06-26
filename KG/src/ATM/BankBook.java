@@ -1,5 +1,35 @@
 package ATM;
 
-public enum BankBook {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+public class BankBook implements Serializable {
+	
+	private static final long serialVersionUID = 123L;
+	
+	private List<ATM> list = new ArrayList<ATM>();
+	
+	private String id;
+	private String pw;
+	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, pw);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BankBook other = (BankBook) obj;
+		return Objects.equals(id, other.id) && Objects.equals(pw, other.pw);
+	}
+	
 	
 }
