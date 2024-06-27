@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
 public class BankBook implements Serializable {
 	
 	private static final long serialVersionUID = 123L;
@@ -14,6 +19,10 @@ public class BankBook implements Serializable {
 	private String id;
 	private String pw;
 	
+	public BankBook(String id, String pw) {
+		this.id = id;
+		this.pw = pw;
+	}
 	
 	@Override
 	public int hashCode() {
