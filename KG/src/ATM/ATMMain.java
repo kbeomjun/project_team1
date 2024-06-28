@@ -158,6 +158,7 @@ public class ATMMain implements Program {
 			ATM atm = new ATM(date, spend, amount);
 			
 			list1.add(atm);
+			
 			printBar();
 			System.out.println("입금되었습니다.");
 			System.out.println("현재 금액 : " + atm.getMoney());
@@ -177,7 +178,12 @@ public class ATMMain implements Program {
 			String spend = scan.next();
 			System.out.println("금액 : ");
 			int amount = -scan.nextInt();
+			
 			ATM atm = new ATM(date, spend, amount);
+			if (atm.getMoney() < amount) {
+				System.out.println("금액이 부죽합니다.");
+				return;
+			}
 			
 			list1.add(atm);
 			
