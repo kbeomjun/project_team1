@@ -15,8 +15,7 @@ public class ATMMain implements Program {
 	
 	private final int OPENED = 1;
 	private final int DEAL = 2;
-	private final int HISTORY = 3;
-	private final int EXIT = 4;
+	private final int EXIT = 3;
 	
 	@Override
 	public void printMenu() {
@@ -47,7 +46,7 @@ public class ATMMain implements Program {
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-		} while (menu != 4);
+		} while (menu != 3);
 		
 	}
 
