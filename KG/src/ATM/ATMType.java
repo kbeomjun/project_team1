@@ -3,7 +3,7 @@ package ATM;
 public enum ATMType {
 	DEPOSIT(1), 
 	WITHDRAW(2), 
-	TRANSFER(3),
+	HISTORY(3),
 	EXIT(4);
 	
 	private final int value;

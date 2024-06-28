@@ -1,6 +1,8 @@
 package ATM;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -51,16 +53,13 @@ public class ATMMain implements Program {
 	}
 
 	@Override
-	public void runMenu(int menu) throws Exception {
+	public void runMenu(int menu){
 		switch (menu) {
 		case OPENED:
 			opened();
 			break;
 		case DEAL:
 			deal();
-			break;
-		case HISTORY:
-			history();
 			break;
 		case EXIT:
 			exit();
@@ -71,12 +70,137 @@ public class ATMMain implements Program {
 		}
 		
 	}
-	
 	private void deal() {
-		// TODO Auto-generated method stub
+		System.out.print("통장 이름 :");
+		String id = scan.next();
+		System.out.print("비밀번호 : ");
+		String pw = scan.next();
+		
+		BankBook bankBook = new BankBook(id, pw);
+		
+		if (!list.contains(id)) {
+			System.out.println("개설되지 않은 통장입니다."); 
+			return;
+		}
+		if (!list.contains(pw)) {
+			System.out.println("비빌번호가 틀렸습니다"); 
+			return;
+		}
+		
+		ATMType at = ATMType.DEPOSIT;
+		prinATMMenu();
+		do {
+			try {
+				int menu = scan.nextInt();
+				at = ATMType.fromValue(menu);
+				int index = list.indexOf(bankBook);
+				List<ATM> list1 = list.get(index).getList();
+				runATMMenu(at, list1);
+			} 
+			catch(InputMismatchException e) {
+				printBar();
+				System.out.println("올바른 메뉴를 입력하세요.");
+				scan.nextLine();
+			}
+			//회원 메뉴 잘못 선택했을 때
+			catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
+			
+			
+		} while (at != ATMType.EXIT);
+		
+	}
+	
+	private void history(List<ATM> list1) {
+		if(list1.size() == 0) {
+			printBar();
+			System.out.println("등록된 거래가 없습니다.");
+			return;
+		}
+		list1.stream().forEach(s->System.out.println(s));
+	}
+
+
+
+
+
+
+	private void runATMMenu(ATMType at, List<ATM> list1) {
+		switch (at) {
+		case DEPOSIT:
+			deposit(list1);
+			break;
+		case WITHDRAW:
+			withdraw(list1);
+			break;
+		case HISTORY:
+			history(list1);
+			break;
+		case EXIT:
+			back();
+		default:
+			break;
+		}
 		
 	}
 
+
+
+	private void deposit(List<ATM> list1){
+		try {
+			System.err.println("날짜 : ");
+			String date = scan.next();
+			System.out.println("거래자 : ");
+			String spend = scan.next();
+			System.out.println("금액 : ");
+			int amount = scan.nextInt();
+			ATM atm = new ATM(date, spend, amount);
+			
+			list1.add(atm);
+			printBar();
+			System.out.println("입금되었습니다.");
+			System.out.println("현재 금액 : " + atm.getMoney());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+
+	private void withdraw(List<ATM> list1) {
+		try {
+			System.err.println("날짜 : ");
+			String date = scan.next();
+			System.out.println("거래자 : ");
+			String spend = scan.next();
+			System.out.println("금액 : ");
+			int amount = -scan.nextInt();
+			ATM atm = new ATM(date, spend, amount);
+			
+			list1.add(atm);
+			
+			printBar();
+			System.out.println("출금되었습니다.");
+			System.out.println("현재 금액 : " + atm.getMoney());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+
+	private void prinATMMenu() {
+		System.out.println(
+				  "통장거래 메뉴\r\n"
+				+ "1. 입금\n"
+				+ "2. 출금\n"
+				+ "3. 계좌이체\n"
+				+ "4. 이전 메뉴\n"
+				+ "메뉴 선택 : ");
+		
+	}
 
 
 	private void opened() {
@@ -175,7 +299,9 @@ public class ATMMain implements Program {
 		printBar();
 	}
 
-
+	private void exit() {
+		System.out.println("프로그램을 종료합니다.");
+	}
 
 	/**중간 줄을 출력하는 메소드*/
 	private void printBar() {
