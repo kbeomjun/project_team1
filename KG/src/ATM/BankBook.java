@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import lombok.Data;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Data
@@ -15,14 +16,10 @@ public class BankBook implements Serializable {
 	private static final long serialVersionUID = 123L;
 	
 	private List<ATM> list = new ArrayList<ATM>();
-	
+	@NonNull
 	private String id;
+	@NonNull
 	private String pw;
-	
-	public BankBook(String id, String pw) {
-		this.id = id;
-		this.pw = pw;
-	}
 	
 	@Override
 	public int hashCode() {

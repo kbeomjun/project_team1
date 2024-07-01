@@ -1,9 +1,10 @@
 package ATM;
 
 public enum BankBookType {
-	INSERT(1), 
-	DELETE(2),
-	EXIT(3);
+	INSERT(1),
+	UPDATE(2),
+	DELETE(3),
+	EXIT(4);
 
 	private final int value;
 	

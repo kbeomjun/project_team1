@@ -10,7 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 @Data
-@RequiredArgsConstructor
 public class ATM implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

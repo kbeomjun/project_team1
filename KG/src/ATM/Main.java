@@ -125,7 +125,8 @@ public class Main {
 	 */
 	//자료 day18.MainEx03
 	public static void main(String[] args) {
-		
+		ATMMain am = new ATMMain();
+		am.run();
 		
 
 	}

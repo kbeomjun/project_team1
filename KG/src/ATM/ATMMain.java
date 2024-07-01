@@ -22,8 +22,7 @@ public class ATMMain implements Program {
 		System.out.print("메뉴\r\n"
 						+ "1. 통장개설\r\n"
 						+ "2. 통장거래\r\n"
-						+ "3. 통장거래내역\r\n"
-						+ "4. 프로그램 종료 \r\n"
+						+ "3. 프로그램 종료 \r\n"
 						+ "메뉴 선택 : ");
 	}
 		
@@ -46,7 +45,7 @@ public class ATMMain implements Program {
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-		} while (menu != 3);
+		} while (menu != EXIT);
 		
 	}
 
@@ -68,19 +67,21 @@ public class ATMMain implements Program {
 		}
 		
 	}
+
+
+
 	private void deal() {
 		System.out.print("통장 이름 :");
 		String id = scan.next();
 		System.out.print("비밀번호 : ");
 		String pw = scan.next();
-		
 		BankBook bankBook = new BankBook(id, pw);
-		
-		if (!list.contains(id)) {
+		printBar();
+		if (!list.contains(bankBook)) {
 			System.out.println("개설되지 않은 통장입니다."); 
 			return;
 		}
-		if (!list.contains(pw)) {
+		if (!list.contains(bankBook)) {
 			System.out.println("비빌번호가 틀렸습니다"); 
 			return;
 		}
@@ -104,8 +105,7 @@ public class ATMMain implements Program {
 			catch(Exception e) {
 				System.out.println(e.getMessage());
 			}
-			
-			
+			printBar();
 		} while (at != ATMType.EXIT);
 		
 	}
@@ -146,12 +146,14 @@ public class ATMMain implements Program {
 
 
 	private void deposit(List<ATM> list1){
+		
+		
 		try {
-			System.err.println("날짜 : ");
+			System.out.print("날짜 : ");
 			String date = scan.next();
 			System.out.println("거래자 : ");
 			String spend = scan.next();
-			System.out.println("금액 : ");
+			System.out.print("금액 : ");
 			int amount = scan.nextInt();
 			ATM atm = new ATM(date, spend, amount);
 			
@@ -170,11 +172,11 @@ public class ATMMain implements Program {
 
 	private void withdraw(List<ATM> list1) {
 		try {
-			System.err.println("날짜 : ");
+			System.err.print("날짜 : ");
 			String date = scan.next();
-			System.out.println("거래자 : ");
+			System.out.print("거래자 : ");
 			String spend = scan.next();
-			System.out.println("금액 : ");
+			System.out.print("금액 : ");
 			int amount = -scan.nextInt();
 			
 			ATM atm = new ATM(date, spend, amount);
@@ -197,12 +199,12 @@ public class ATMMain implements Program {
 
 	private void prinATMMenu() {
 		System.out.println(
-				  "통장거래 메뉴\r\n"
-				+ "1. 입금\n"
-				+ "2. 출금\n"
-				+ "3. 계좌이체\n"
-				+ "4. 이전 메뉴\n"
-				+ "메뉴 선택 : ");
+				    "통장거래 메뉴\r\n"
+				  + "1. 입금\r\n"
+				  + "2. 출금\r\n"
+				  + "3. 통장거래내역\r\n"
+				  + "4. 이전 메뉴\r\n"
+				  + "메뉴 선택 : ");
 		
 	}
 
@@ -213,7 +215,7 @@ public class ATMMain implements Program {
 			printBankBookMenu();
 			try {
 				int munu = scan.nextInt();
-
+				printBar();
 				bt = BankBookType.fromValue(munu);
 				runBankBookMenu(bt);
 				
@@ -234,11 +236,13 @@ public class ATMMain implements Program {
 
 	private void printBankBookMenu() {
 		System.out.print(
-				    "통장개설 메뉴\r\n"
-				  + "1. 통장 개설\n"
-				  + "2. 통장 해지\n"
-				  + "3. 이전으로\n"
-				  + "메뉴 선택 : ");
+				        "통장개설 메뉴\r\n"
+				      + "1. 통장 개설\r\n"
+				      + "2. 통장 비밀번호 변경\r\n"
+				      + "3. 통장 해지\r\n"
+				      + "4. 이전으로\r\n"
+				      + "-----------------\r\n"
+				      + "메뉴 선택 : ");
 	}
 
 
@@ -248,8 +252,11 @@ public class ATMMain implements Program {
 		case INSERT:
 			insert();
 			break;
+		case UPDATE:
+			update();
+			break;
 		case DELETE:
-			delere();
+			delete();
 			break;
 		case EXIT:
 			back();
@@ -257,25 +264,45 @@ public class ATMMain implements Program {
 		}
 		
 	}
-
-
-
-	private void back() {
+	
+	private void update() {
+		System.out.print("통장 이름 :");
+		String id = scan.next();
+		System.out.print("비밀번호 : ");
+		String pw = scan.next();
+		BankBook bankBook = new BankBook(id, pw);
+		int index = list.indexOf(bankBook);
+		if (!list.contains(bankBook)) {
+			printBar();
+			System.out.println("개설되지 않은 통장입니다."); 
+			printBar();
+			return;
+		}
+		if (!list.contains(bankBook)) {
+			printBar();
+			System.out.println("비빌번호가 틀렸습니다"); 
+			printBar();
+			return;
+		}
 		printBar();
-		System.out.println("이전으로 돌어갑니다.");
+		System.out.print("새로운 통장 이름 :");
+		String id1 = scan.next();
+		System.out.print("새로운 비밀번호 : ");
+		String pw1 = scan.next();
+		list.get(index).setId(id1);
+		list.get(index).setPw(pw1);
 		printBar();
+		System.out.println("통장 정보를 수정했습니다.");
+		
 	}
 
 
 
-	private void delere() {
-		System.out.print("통장 이름 : ");
-		String id = scan.next();
-		System.out.print("비밀번호 : ");
-		String pw = scan.next();
-		
-		BankBook bankBook = new BankBook(id, pw);
-		
+
+
+
+	private void delete() {
+		BankBook bankBook = inputBankBook();
 		if(!list.remove(bankBook)) {
 			printBar();
 			System.out.println("개설되지 않은 통장입니다.");
@@ -289,17 +316,27 @@ public class ATMMain implements Program {
 
 
 
+
+
 	private void insert() {
+		BankBook bankBook = inputBankBook();
+		list.add(bankBook);
+		printBar();
+		System.out.println("통장이 개설되었습니다.");
+		printBar();
+	}
+	
+	private BankBook inputBankBook() {
 		System.out.print("통장 이름 : ");
 		String id = scan.next();
 		System.out.print("비밀번호 : ");
 		String pw = scan.next();
-		
-		BankBook bankBook = new BankBook(id, pw);
-		
-		list.add(bankBook);
+		return new BankBook(id, pw);
+	}
+	
+	private void back() {
 		printBar();
-		System.out.println("통장이 개설되었습니다.");
+		System.out.println("이전으로 돌어갑니다.");
 		printBar();
 	}
 
@@ -309,7 +346,7 @@ public class ATMMain implements Program {
 
 	/**중간 줄을 출력하는 메소드*/
 	private void printBar() {
-		System.out.println("----------------------------");
+		System.out.println("-----------------");
 	}
 
 }
